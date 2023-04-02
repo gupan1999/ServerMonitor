@@ -1,0 +1,85 @@
+spring:
+#  influx:
+#    url: http://192.168.0.110:8086
+#    token: DKpvqp9FrgsRp4SDvFE916KXG-1aO4YyBgBO_xe9BRzdZkxa5U9XZP61ovc0YVXUzeQWNo-E8GbQSyCcXJ44rQ==
+#    org: org0
+#    bucket: server_metrics
+  main:
+    allow-bean-definition-overriding: true
+
+  mail:
+    host: smtp.qq.com
+    from: 1724845155@qq.com
+    # 使用自己的发送方用户名 + 授权码填充
+    username:
+    password:
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  datasource:
+    url: jdbc:mysql://192.168.0.110:3306/monitor?serverTimezone=Asia/Shanghai
+    username: root
+    password: rootpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+#  devtools:
+#    restart:
+#      enabled: true  #设置开启热部署
+#      additional-paths: src/main/java #重启目录
+#      exclude: WEB-INF/**
+
+  redis:
+    database: 0
+    host: 192.168.0.110        # Redis服务器地址
+    port: 6379              # Redis服务器连接端口
+    password: redispassword            # Redis服务器连接密码（默认为空）
+    lettuce:
+      pool:
+        max-active: 1000   # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: 10000      # # 连接池最大阻塞等待时间（使用负值表示没有限制））
+        max-idle: 200     # 连接池中的最大空闲连接
+        min-idle: 50      # 连接池中的最小空闲连接
+        time-between-eviction-runs: 100000 #每ms运行一次空闲连接回收器（独立线程）
+
+
+
+mybatis:
+  # 指定 mapper.xml 的位置
+  mapper-locations: classpath:mapper/*.xml
+  #扫描实体类的位置,在此处指明扫描实体类的包，在 mapper.xml 中就可以不写实体类的全路径名
+  type-aliases-package: com.monitor.pojo
+  configuration:
+    #默认开启驼峰命名法，可以不用设置该属性
+    map-underscore-to-camel-case: true
+
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启MyBatis的二级缓存
+#    cache-enabled: true
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+
+
+
+
+server:
+  port: 8888
+
+#  ssl:
+#    key-store: classpath:server.keystore
+#    key-alias: tomcat
+#    enabled: true
+#    key-store-password:
+#    key-store-type: JKS

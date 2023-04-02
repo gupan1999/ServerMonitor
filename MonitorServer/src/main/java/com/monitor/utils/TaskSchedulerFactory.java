@@ -1,0 +1,26 @@
+package com.monitor.utils;
+
+import org.quartz.spi.TriggerFiredBundle;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.scheduling.quartz.AdaptableJobFactory;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+
+@Component
+public class TaskSchedulerFactory extends AdaptableJobFactory {
+
+    // 需要使用这个BeanFactory对Qurartz创建好Job实例进行后续处理，属于Spring的技术范畴.
+    @Resource
+    private AutowireCapableBeanFactory capableBeanFactory;
+
+    @Override
+    protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
+        // 首先，调用父类的方法创建好Quartz所需的Job实例
+        Object jobInstance = super.createJobInstance(bundle);
+        // 然后，使用BeanFactory为创建好的Job实例进行属性自动装配并将其纳入到Spring容器的管理之中，属于Spring的技术范畴.
+        capableBeanFactory.autowireBean(jobInstance);
+        return jobInstance;
+    }
+
+}

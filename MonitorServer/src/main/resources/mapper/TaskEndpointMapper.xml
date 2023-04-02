@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monitor.dao.TaskEndpointMapper">
+<!--  <cache type="com.monitor.utils.MybatisRedisCache"/>-->
+<!--  <cache/>-->
+  <resultMap id="BaseResultMap" type="com.monitor.pojo.TaskEndpointKey">
+    <id column="task_id" jdbcType="BIGINT" property="taskId" />
+    <id column="endpoint_id" jdbcType="BIGINT" property="endpointId" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    task_id, endpoint_id
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.monitor.pojo.TaskEndpointKey">
+    delete from task_endpoint
+    where task_id = #{taskId,jdbcType=BIGINT}
+      and endpoint_id = #{endpointId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.monitor.pojo.TaskEndpointKey">
+    insert into task_endpoint (task_id, endpoint_id)
+    values (#{taskId,jdbcType=BIGINT}, #{endpointId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.monitor.pojo.TaskEndpointKey">
+    insert into task_endpoint
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="endpointId != null">
+        endpoint_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="endpointId != null">
+        #{endpointId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getEndpoints" parameterType="java.lang.Long" resultType="java.lang.Long">
+       select  endpoint_id from task_endpoint where task_id = #{row.taskId,jdbcType=BIGINT}
+          </select>
+
+  <select id="getTasks" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select  task_id from task_endpoint where endpoint_id = #{row.endpoint_id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteTask" parameterType="java.lang.Long">
+    delete from task_endpoint where task_id=#{row.taskId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteEndpoint" parameterType="java.lang.Long">
+    delete from task_endpoint where endPoint_id=#{row.endpoint_id,jdbcType=BIGINT}
+  </delete>
+
+</mapper>

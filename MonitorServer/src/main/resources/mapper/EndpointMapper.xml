@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monitor.dao.EndpointMapper">
+<!--  <cache type="com.monitor.utils.MybatisRedisCache"/>-->
+<!--  <cache/>-->
+  <resultMap id="BaseResultMap" type="com.monitor.pojo.Endpoint">
+    <id column="endpoint_id" jdbcType="BIGINT" property="endpointId" />
+    <result column="endpoint_name" jdbcType="VARCHAR" property="endpointName" />
+    <result column="level_limit" jdbcType="VARCHAR" property="levelLimit" />
+    <result column="destination" jdbcType="VARCHAR" property="destination" />
+    <result column="parameter" jdbcType="VARCHAR" property="parameter" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    endpoint_id, endpoint_name, level_limit, destination, parameter, user_id
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from endpoint_
+    where endpoint_id = #{endpointId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from endpoint_
+    where endpoint_id = #{endpointId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.monitor.pojo.Endpoint">
+    insert into endpoint_ (endpoint_id, endpoint_name, level_limit, 
+      destination, parameter, user_id
+      )
+    values (#{endpointId,jdbcType=BIGINT}, #{endpointName,jdbcType=VARCHAR}, #{levelLimit,jdbcType=VARCHAR}, 
+      #{destination,jdbcType=VARCHAR}, #{parameter,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.monitor.pojo.Endpoint">
+    insert into endpoint_
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="endpointId != null">
+        endpoint_id,
+      </if>
+      <if test="endpointName != null">
+        endpoint_name,
+      </if>
+      <if test="levelLimit != null">
+        level_limit,
+      </if>
+      <if test="destination != null">
+        destination,
+      </if>
+      <if test="parameter != null">
+        parameter,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="endpointId != null">
+        #{endpointId,jdbcType=BIGINT},
+      </if>
+      <if test="endpointName != null">
+        #{endpointName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelLimit != null">
+        #{levelLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="destination != null">
+        #{destination,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter != null">
+        #{parameter,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.monitor.pojo.Endpoint">
+    update endpoint_
+    <set>
+      <if test="endpointName != null">
+        endpoint_name = #{endpointName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelLimit != null">
+        level_limit = #{levelLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="destination != null">
+        destination = #{destination,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter != null">
+        parameter = #{parameter,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where endpoint_id = #{endpointId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.monitor.pojo.Endpoint">
+    update endpoint_
+    set endpoint_name = #{endpointName,jdbcType=VARCHAR},
+      level_limit = #{levelLimit,jdbcType=VARCHAR},
+      destination = #{destination,jdbcType=VARCHAR},
+      parameter = #{parameter,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT}
+    where endpoint_id = #{endpointId,jdbcType=BIGINT}
+  </update>
+
+  <select id="findAllById" parameterType="java.lang.Long" resultType="com.monitor.pojo.Endpoint">
+    select
+      *
+    from endpoint_
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+
+  <select id="findAll" resultType="com.monitor.pojo.Endpoint">
+    select
+      *
+    from endpoint_
+  </select>
+
+  <select id="findFrontends" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select
+      endpoint_id
+    from endpoint_
+    where user_id = #{userId,jdbcType=BIGINT} and parameter like concat('%','frontend','%')
+  </select>
+
+
+</mapper>

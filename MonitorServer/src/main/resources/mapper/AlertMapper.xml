@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monitor.dao.AlertMapper">
+
+<!--  <cache type="com.monitor.utils.MybatisRedisCache"/>-->
+<!--  <cache/>-->
+  <resultMap id="BaseResultMap" type="com.monitor.pojo.Alert">
+    <id column="alert_id" jdbcType="BIGINT" property="alertId" />
+    <result column="alert_name" jdbcType="VARCHAR" property="alertName" />
+    <result column="alert_level" jdbcType="VARCHAR" property="alertLevel" />
+    <result column="alert_timestamp" jdbcType="TIMESTAMP" property="alertTimestamp" />
+    <result column="alert_description" jdbcType="VARCHAR" property="alertDescription" />
+    <result column="endpoint_id" jdbcType="BIGINT" property="endpointId" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    alert_id, alert_name, alert_level, alert_timestamp, alert_description, endpoint_id
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from alert
+    where alert_id = #{alertId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from alert
+    where alert_id = #{alertId,jdbcType=BIGINT}
+  </delete>
+
+
+  <insert id="insertSelective" parameterType="com.monitor.pojo.Alert">
+    insert into alert
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="alertId != null">
+        alert_id,
+      </if>
+      <if test="alertName != null">
+        alert_name,
+      </if>
+      <if test="alertLevel != null">
+        alert_level,
+      </if>
+      <if test="alertTimestamp != null">
+        alert_timestamp,
+      </if>
+      <if test="alertDescription != null">
+        alert_description,
+      </if>
+      <if test="endpointId != null">
+        endpoint_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="alertId != null">
+        #{alertId,jdbcType=BIGINT},
+      </if>
+      <if test="alertName != null">
+        #{alertName,jdbcType=VARCHAR},
+      </if>
+      <if test="alertLevel != null">
+        #{alertLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTimestamp != null">
+        #{alertTimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alertDescription != null">
+        #{alertDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="endpointId != null">
+        #{endpointId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.monitor.pojo.Alert">
+    update alert
+    <set>
+      <if test="alertName != null">
+        alert_name = #{alertName,jdbcType=VARCHAR},
+      </if>
+      <if test="alertLevel != null">
+        alert_level = #{alertLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTimestamp != null">
+        alert_timestamp = #{alertTimestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alertDescription != null">
+        alert_description = #{alertDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="endpointId != null">
+        endpoint_id = #{endpointId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where alert_id = #{alertId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.monitor.pojo.Alert">
+    update alert
+    set alert_name = #{alertName,jdbcType=VARCHAR},
+      alert_level = #{alertLevel,jdbcType=VARCHAR},
+      alert_timestamp = #{alertTimestamp,jdbcType=TIMESTAMP},
+      alert_description = #{alertDescription,jdbcType=VARCHAR},
+      endpoint_id = #{endpointId,jdbcType=BIGINT}
+    where alert_id = #{alertId,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="findAll" resultType="com.monitor.pojo.Alert">
+          select <include refid="Base_Column_List" /> from alert order by alert_id desc
+  </select>
+  <insert id="insert" parameterType="com.monitor.pojo.Alert">
+    insert into alert (alert_id, alert_name, alert_level,
+                       alert_timestamp, alert_description, endpoint_id
+    )
+    values (#{alertId,jdbcType=BIGINT}, #{alertName,jdbcType=VARCHAR}, #{alertLevel,jdbcType=VARCHAR},
+            #{alertTimestamp,jdbcType=TIMESTAMP}, #{alertDescription,jdbcType=VARCHAR}, #{endpointId,jdbcType=BIGINT}
+           )
+  </insert>
+
+  <select id="findById" parameterType="java.lang.Long" resultType="com.monitor.pojo.Alert">
+    select * from alert where endpoint_id = #{endpointId,jdbcType=BIGINT} order by alert_id desc
+  </select>
+
+  <select id="findByEndpointIds"  resultType="com.monitor.pojo.Alert">
+    select * from alert where endpoint_id in
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+    #{item}
+  </foreach> order by alert_id desc
+  </select>
+
+</mapper>

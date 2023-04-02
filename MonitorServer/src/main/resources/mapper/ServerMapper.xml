@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monitor.dao.ServerMapper">
+  <resultMap id="BaseResultMap" type="com.monitor.pojo.Server">
+    <id column="server_id" jdbcType="BIGINT" property="serverId" />
+    <result column="server_name" jdbcType="VARCHAR" property="serverName" />
+    <result column="server_password" jdbcType="VARCHAR" property="serverPassword" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    server_id, server_name, server_password, ip, state, location
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from server_
+    where server_id = #{serverId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from server_
+    where server_id = #{serverId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.monitor.pojo.Server">
+    insert into server_ (server_id, server_name, server_password, 
+      ip, state, location
+      )
+    values (#{serverId,jdbcType=BIGINT}, #{serverName,jdbcType=VARCHAR}, #{serverPassword,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}
+      )
+  </insert>
+
+
+  <update id="updateByPrimaryKey" parameterType="com.monitor.pojo.Server">
+    update server_
+    set server_name = #{serverName,jdbcType=VARCHAR},
+      server_password = #{serverPassword,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR}
+    where server_id = #{serverId,jdbcType=BIGINT}
+  </update>
+<!--  <cache type="com.monitor.utils.MybatisRedisCache" />-->
+<!--  <cache />-->
+
+  <select id="getAllServerName" resultType="java.lang.String">
+          select server_name from server_
+          </select>
+
+  <select id="findIdByName" parameterType="java.lang.String" resultType="java.lang.Long">
+    select server_id from server_ where server_name  = #{serverName}
+  </select>
+
+  <select id="getAllServer" resultType="com.monitor.pojo.Server">
+    select * from server_
+  </select>
+
+</mapper>

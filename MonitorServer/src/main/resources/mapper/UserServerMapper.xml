@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.monitor.dao.UserServerMapper">
+<!--  <cache type="com.monitor.utils.MybatisRedisCache"/>-->
+<!--  <cache/>-->
+  <resultMap id="BaseResultMap" type="com.monitor.pojo.UserServerKey">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <id column="server_id" jdbcType="BIGINT" property="serverId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, server_id
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.monitor.pojo.UserServerKey">
+    delete from user_server
+    where user_id = #{userId,jdbcType=BIGINT}
+      and server_id = #{serverId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.monitor.pojo.UserServerKey">
+    insert into user_server (user_id, server_id)
+    values (#{userId,jdbcType=BIGINT}, #{serverId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.monitor.pojo.UserServerKey">
+    insert into user_server
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="serverId != null">
+        server_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="serverId != null">
+        #{serverId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getClients" parameterType="java.lang.Long" resultType="java.lang.String">
+    select s.server_name from server_ s inner join user_server us on s.server_id = us.server_id
+    where us.user_id = #{userId,jdbcType=BIGINT}
+  </select>
+
+  <select id="getServers" parameterType="java.lang.Long" resultType="com.monitor.pojo.Server">
+    select  s.server_id, s.server_name, s.ip, s.state, s.location from server_ s inner join user_server us on s.server_id = us.server_id
+    where us.user_id = #{userId,jdbcType=BIGINT}
+
+  </select>
+
+
+</mapper>
