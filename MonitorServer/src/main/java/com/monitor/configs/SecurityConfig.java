@@ -1,8 +1,9 @@
 package com.monitor.configs;
-
 import com.monitor.utils.LoginFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,9 +20,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private LoginFilter loginFilter;
 
+//    @Value("${spring.profile.active:default}")
+//    @Value("${spring.profiles.active:default}")
+//    private String profile;
+    @Value("#{'${spring.profiles.active:default}'}")
+    private String test;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 关闭csrf和frameOptions，如果不关闭会影响前端请求接口（这里不展开细讲了，感兴趣的自行了解）
+        System.out.println("SecurityConfig+test:"+test);
         http.csrf().disable();
         http.headers().frameOptions().disable();
         // 开启跨域以便前端调用接口

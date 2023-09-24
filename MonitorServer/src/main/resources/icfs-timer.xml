@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+    <bean id="testTaskHandler1" class="com.monitor.utils.SampleJob1" />
+    <bean id="testTaskHandler2" class="com.monitor.utils.SampleJob2" />
+    <bean id="testTaskJobDetail1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="testTaskHandler1" />
+        <property name="targetMethod" value="doJob" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="testTaskTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="testTaskJobDetail1" />
+        <property name="cronExpression" value="0/10 * * * * ?" />
+    </bean>
+    <bean id="testTaskJobDetail2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="testTaskHandler2" />
+        <property name="targetMethod" value="doJob" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="testTaskTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="testTaskJobDetail2" />
+        <property name="cronExpression" value="0/15 * * * * ?" />
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="testTaskTrigger1"/>
+                <ref bean="testTaskTrigger2"/>
+            </list>
+        </property>
+    </bean>
+
+
+
+
+</beans>

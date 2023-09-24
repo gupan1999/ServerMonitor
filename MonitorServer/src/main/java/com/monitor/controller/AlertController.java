@@ -147,6 +147,34 @@ public class AlertController {
         resMap.put("total",total);
         return resMap;
     }
+
+    @LogParam
+    @GetMapping("/alert/get0")
+    @ResponseBody
+    public Map<String, Object> getAlertList0(@RequestParam(value = "page")int page,@RequestParam(value = "limit")int limit){
+//        long id = Long.parseLong(Objects.requireNonNull(stringRedisTemplate.opsForValue().get(token)));
+        long total;
+//        List<Role> roles = userService.getRoles(id);
+//        List<String> role_names = new ArrayList<>();
+        List<Alert> alertList;
+//        for(Role role: roles){
+//            role_names.add(role.getRoleName());
+//        }
+//        if(role_names.contains("admin")) {
+            alertList = alertService.findAllWithPage(page,limit);
+//        }else {
+//            alertList = alertService.findByUserIdWithPage(id,page,limit);
+//        }
+        total = new PageInfo<>(alertList).getTotal();
+        Map<String, Object> resMap = new HashMap<>();
+        if(alertList.size() == 0){
+            throw  new APIException(ResultCode.NO_DATA);
+        }
+        resMap.put("alerts",alertList);
+        resMap.put("total",total);
+        return resMap;
+    }
+
     @LogParam
     @PostMapping("/task/update")
     @ResponseBody

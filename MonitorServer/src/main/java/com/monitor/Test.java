@@ -40,7 +40,7 @@ import javax.servlet.ServletRequest;
 public class Test {
 
     public static void main(String[] args) throws IOException {
-        String resource = "mybatis-config.xml";
+        String resource = "mybatis-config.xml.xml";
 //        InputStream inputStream = Resources.getResourceAsStream(resource);
 //        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 

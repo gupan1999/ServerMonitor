@@ -33,7 +33,7 @@ public class TaskInitServiceImpl implements TaskInitService {
     /**
      * 在服务启动时初始化各定时任务
      */
-    @PostConstruct
+
     @Override
     public void init() {
         if (scheduler == null) {
